@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sandbox de TestQuality</title>
+</head>
+<body>
+  <main>
+    <h1>Inicio de sesión de prueba</h1>
+    <p>Demo local. No uses credenciales reales.</p>
+    <form>
+      <p><label>Correo <input name="email" type="email" value="activa@example.test" required></label></p>
+      <p><label>Contraseña <input name="password" type="password" value="demo-pass" required></label></p>
+      <p><label><input name="regression" type="checkbox"> Simular regresión</label></p>
+      <button>Iniciar sesión</button>
+    </form>
+    <p id="result" role="status"></p>
+  </main>
+  <script type="module">
+    import { signIn } from './auth.mjs';
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const { email, password, regression } = form.elements;
+      const allowed = signIn(email.value, password.value, { simulateRegression: regression.checked });
+      document.querySelector('#result').textContent = allowed ? 'Acceso concedido' : 'Acceso denegado';
+    });
+  </script>
+</body>
+</html>
