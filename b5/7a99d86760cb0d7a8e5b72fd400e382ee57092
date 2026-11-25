@@ -1,0 +1,22 @@
+.gitignore
+  h_7a1bb3dcd5e5dc 25-30
+README.md
+  h_7a1bb3dcd5e5dc 1-35
+auth.mjs
+  h_7a1bb3dcd5e5dc 1-9
+auth.test.mjs
+  h_7a1bb3dcd5e5dc 1-19
+index.html
+  h_7a1bb3dcd5e5dc 1-32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "b57a99d86760cb0d7a8e5b72fd400e382ee57092",
+  "prompts": {},
+  "humans": {
+    "h_7a1bb3dcd5e5dc": {
+      "author": "Jose Maria Sanchidrian Martin <josemsmari@ext.inditex.com>"
+    }
+  }
+}
