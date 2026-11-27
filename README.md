@@ -2,6 +2,8 @@
 
 Demo de inicio de sesión para probar GitHub Issues, GitHub Projects, pull requests y la importación de resultados en TestQuality. No implementa autenticación real; usa únicamente datos ficticios.
 
+Para la validación manual del PR, usa el caso de la cuenta bloqueada y registra el resultado en el run de TestQuality vinculado al PR.
+
 ## Ejecutar en local
 
 - Con Node.js 22: `node --test`.
