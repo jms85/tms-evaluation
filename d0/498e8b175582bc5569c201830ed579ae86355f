@@ -1,0 +1,16 @@
+auth.test.mjs
+  h_7a1bb3dcd5e5dc 20-31
+features/authentication-edge-cases.feature
+  h_7a1bb3dcd5e5dc 1-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "d0498e8b175582bc5569c201830ed579ae86355f",
+  "prompts": {},
+  "humans": {
+    "h_7a1bb3dcd5e5dc": {
+      "author": "Jose Maria Sanchidrian Martin <josemsmari@ext.inditex.com>"
+    }
+  }
+}
