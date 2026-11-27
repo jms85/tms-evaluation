@@ -1,0 +1,14 @@
+README.md
+  h_7a1bb3dcd5e5dc 5-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "1f10744b230d4602be903e81c33227e7ec4c2e65",
+  "prompts": {},
+  "humans": {
+    "h_7a1bb3dcd5e5dc": {
+      "author": "Jose Maria Sanchidrian Martin <josemsmari@ext.inditex.com>"
+    }
+  }
+}
