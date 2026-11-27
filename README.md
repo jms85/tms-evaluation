@@ -25,11 +25,11 @@ Demo de inicio de sesión para probar GitHub Issues, GitHub Projects, pull reque
 
 ## GitHub Actions y TestQuality
 
-El workflow **TestQuality evaluation** se ejecuta manualmente desde **Actions** una vez que esté en la rama por defecto. Sin configurar credenciales genera un JUnit descargable. Para probar también el envío:
+El workflow **TestQuality evaluation** está disponible como [plantilla YAML](docs/testquality-evaluation.yml). Para activarlo, copia su contenido en `.github/workflows/testquality-evaluation.yml` en `main` con una cuenta que pueda editar workflows. Publica el resumen y el JUnit en GitHub para cada PR a `main`, cada push a `main` y cada ejecución manual. El envío a TestQuality solo se hace desde `main`, no desde los PRs.
 
 1. Crea el ciclo `Automation Smoke` en `GitHub TMS Evaluation`.
 2. Genera un token de TestQuality y guárdalo como secret de Actions `TQ_ACCESS_TOKEN`. No lo pongas en archivos, issues ni logs.
-3. Pulsa **Run workflow** y activa `upload_to_testquality`. Ejecuta una vez con `simulate_regression` desactivado y otra con él activado. La segunda ejecución debe fallar y aun así publicar el informe.
+3. En **Actions → TestQuality evaluation → Run workflow**, selecciona `main` y ejecuta una vez con `simulate_regression` desactivado y otra con él activado. La segunda ejecución debe fallar y aun así publicar el informe.
 4. Comprueba que el resultado importado muestra la aserción fallida. El check de Actions y el check de TestQuality asociado al PR son flujos distintos.
 
 Al terminar la prueba, revoca el token y elimina el secret. [Documentación de la integración de GitHub](https://doc.testquality.com/integrate_with_github) · [CLI de TestQuality](https://doc.testquality.com/testquality_cli/overview).

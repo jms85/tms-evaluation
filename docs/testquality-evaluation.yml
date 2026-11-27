@@ -1,0 +1,81 @@
+name: TestQuality evaluation
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      simulate_regression:
+        description: Simular una regresión de cuenta bloqueada
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  auth-smoke:
+    name: Pruebas de autenticación
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Ejecutar tests y generar JUnit
+        env:
+          DEMO_REGRESSION: ${{ inputs.simulate_regression && '1' || '0' }}
+        run: node --test --test-reporter=junit auth.test.mjs > junit.xml
+      - name: Mostrar resultados en GitHub
+        if: ${{ !cancelled() && hashFiles('junit.xml') != '' }}
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import xml.etree.ElementTree as ET
+
+          cases = ET.parse('junit.xml').findall('.//testcase')
+          rows = []
+          for case in cases:
+              if case.find('failure') is not None or case.find('error') is not None:
+                  result = 'Fallida'
+              elif case.find('skipped') is not None:
+                  result = 'Omitida'
+              else:
+                  result = 'Aprobada'
+              name = case.get('name', '').replace('|', '&#124;').replace('\n', ' ')
+              rows.append((name, result))
+
+          print('## Resultados de autenticación\n')
+          print(' | '.join(f'{sum(result == status for _, result in rows)} {status.lower()}s'
+                           for status in ('Aprobada', 'Fallida', 'Omitida')))
+          print('\n| Prueba | Resultado |\n| --- | --- |')
+          for name, result in rows:
+              print(f'| {name} | {result} |')
+          print('\nEl XML con el detalle del fallo está disponible en el artefacto `junit`.')
+          PY
+      - name: Guardar el informe JUnit
+        if: ${{ !cancelled() && hashFiles('junit.xml') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit
+          path: junit.xml
+          if-no-files-found: error
+      - name: Instalar el CLI de TestQuality
+        id: testquality-cli
+        if: ${{ !cancelled() && hashFiles('junit.xml') != '' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+        run: npm install --global @testquality/cli
+      - name: Publicar el informe en TestQuality
+        if: ${{ !cancelled() && steps.testquality-cli.outcome == 'success' }}
+        env:
+          TQ_ACCESS_TOKEN: ${{ secrets.TQ_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$TQ_ACCESS_TOKEN" ]; then
+            echo 'No se envió a TestQuality: falta el secret TQ_ACCESS_TOKEN.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          testquality upload_test_run junit.xml \
+            --project_name='GitHub TMS Evaluation' --plan_name='Automation Smoke'
+          echo 'Informe enviado a TestQuality: GitHub TMS Evaluation → Automation Smoke.' >> "$GITHUB_STEP_SUMMARY"
