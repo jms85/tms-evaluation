@@ -4,6 +4,8 @@ Demo de inicio de sesión para probar GitHub Issues, GitHub Projects, pull reque
 
 ## Ejecutar en local
 
+Para repetir la prueba de vinculación con un PR nuevo, crea un run manual y selecciona el PR antes de guardar.
+
 - Con Node.js 22: `node --test`.
 - Para simular la regresión de cuenta bloqueada y generar un informe JUnit: `DEMO_REGRESSION=1 node --test --test-reporter=junit > junit.xml`. Este comando devuelve un código distinto de cero a propósito.
 - Para la prueba manual: `python3 -m http.server 8000 --bind 127.0.0.1`. Abre `http://127.0.0.1:8000`. La página tiene un interruptor para simular la misma regresión.
